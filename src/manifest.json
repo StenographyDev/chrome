@@ -12,6 +12,9 @@
   "icons": {
     "128": "icon-128.png"
   },
+  "permissions": [
+    "tabs"
+  ],
   "content_scripts": [
     {
       "matches": [

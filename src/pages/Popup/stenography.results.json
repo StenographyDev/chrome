@@ -1,0 +1,20 @@
+{
+  "shorthands": [
+    {
+      "pm": "\n\nThis function will append dots to the end of a string.",
+      "dev": " The function takes in three parameters: rangestart, lines, and cutoff.\n The first parameter is the starting point for the dots. It starts at 0 and increases by 1 each time it's called.\n The second parameter is how many lines of text to append dots to before stopping. \n The third parameter is a number that determines when we stop adding dots to the string (in this case, tabs are used). \n Finally, there's an optional fourth argument which can be either true or false depending on whether you want your strings with tabs or without them",
+      "context": "vsc",
+      "code": "function appendDots(rangestart = 0, lines, cutoff, isTabs) {\n    ...\n  }",
+      "filename": "/Users/bram/Desktop/PARA/Projects/chrome-extension-boilerplate-react/src/pages/Popup/Popup.jsx",
+      "date": "2021-06-09T03:18:03.414Z"
+    },
+    {
+      "pm": "\n\nThis code is importing React, the library that powers this app. It's also importing a SVG file called \"logo.svg\" and some CSS files from the project folder.",
+      "dev": " \"\"\n \"This function will fetch the stenography API key from our server and use it to log in.\"",
+      "context": "vsc",
+      "code": "import React from 'react';\nimport logo from '../../assets/img/logo.svg';\nimport './Popup.css';\nlet STENOGRAPHY_API_KEY = \"01be3b53-eb8f-4f19-86ab-6f30ee92d74b\"\nconst Popup = () => {\n  async function fetchStenography(code) {\n    ...\n  }\n  function logInp() {\n    ...\n  }\n  function removeSmallest(arr) {\n    ...\n  }\n  function appendDots(rangestart = 0, lines, cutoff, isTabs) {\n    ...\n  }\n  function parseStr(str = '') {\n    ...\n  }\n  return (\n    ...\n  );\n};\nexport default Popup;",
+      "filename": "/Users/bram/Desktop/PARA/Projects/chrome-extension-boilerplate-react/src/pages/Popup/Popup.jsx",
+      "date": "2021-06-09T03:18:30.277Z"
+    }
+  ]
+}
