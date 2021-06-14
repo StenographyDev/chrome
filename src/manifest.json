@@ -12,8 +12,14 @@
   "icons": {
     "128": "icon-128.png"
   },
+  "host_permissions": [
+    "https://stackoverflow.com/*"
+  ],
   "permissions": [
-    "tabs"
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "scripting"
   ],
   "content_scripts": [
     {

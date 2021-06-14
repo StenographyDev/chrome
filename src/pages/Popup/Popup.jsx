@@ -14,7 +14,7 @@ const Popup = () => {
     let options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ "context": "vsc", "code": code, "api_key": STENOGRAPHY_API_KEY, "audience": "all" })
+      body: JSON.stringify({ "context": "vsc", "code": code, "api_key": STENOGRAPHY_API_KEY, "audience": "pm" })
     };
 
     const resp = await fetch(fetchUrl, options)
@@ -38,15 +38,55 @@ const Popup = () => {
         .then(res => {
           return fetchStenography(res)
         })
-        .then(res => alert(res.pm))
+        .then(res => console.log(res.pm))
         .catch(err => console.error(err))
 
     }
 
     chrome.tabs.query(query, callback);
+  }
 
-    // https://github.com/miguelgrinberg/Flask-HTTPAuth/blob/main/src/flask_httpauth.py
 
+
+
+  function highlight() {
+    console.log('hig')
+    var query = { active: true, currentWindow: true };
+    function callback(tabs) {
+
+
+
+      function greetUser() {
+        console.log('calls')
+        const selection = window.getSelection().toString()
+        return selection
+      }
+
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id, allFrames: true },
+        function: greetUser
+      }, (injectionResults) => {
+        for (const frameResult of injectionResults)
+          console.log('Frame Title: ' + frameResult.result);
+      });
+
+      // function getTitle() {
+      //   return document.title;
+      // }
+      // const tabId = tabs[0].id;
+      // chrome.scripting.executeScript(
+      //   {
+      //     target: { tabId: tabId, allFrames: true },
+      //     function: getTitle,
+      //   },
+      //   (injectionResults) => {
+      //     for (const frameResult of injectionResults)
+      //       console.log('Frame Title: ' + frameResult.result);
+      //   });
+
+    }
+
+    chrome.tabs.query(query, callback);
   }
 
 
@@ -113,9 +153,15 @@ const Popup = () => {
     }
 
     let indentLevelsList = Array.from(indentLevels)
+    console.log(indentLevelsList)
 
     // remove -1 if it exists
     if (indentLevelsList.includes(-1)) {
+      indentLevelsList = removeSmallest(indentLevelsList).newArr
+    }
+
+    // remove 0 if it exists
+    if (indentLevelsList.includes(0)) {
       indentLevelsList = removeSmallest(indentLevelsList).newArr
     }
 
@@ -132,11 +178,15 @@ const Popup = () => {
       cutoff = res.min // set cutoff to 2nd depth level
       secondMin = res.min
 
+      // VSC OMG STOP PLS
       // if (newArr.length >= 1) {
-      //   for (let i = 0; i < lines.length; i++) {
-      //     if (isTabs) lines[i] = lines[i].replace('\t'.repeat(secondMin), '')
-      //     else lines[i] = lines[i].replace(' '.repeat(secondMin), '')
-      //   }
+      //     for (let i = 0; i < lines.length; i++) {
+      //         if (isTabs) lines[i] = lines[i].replace('\t'.repeat(secondMin), '')
+      //         else { 
+      //             if (lines[i].search(/\S/) === secondMin)
+      //             lines[i] = lines[i].replace(' '.repeat(secondMin), '')
+      //         }
+      //     }
       // }
     }
 
@@ -144,7 +194,7 @@ const Popup = () => {
     const rejoined = topLines.join('\n')
 
     // too big for OAI prompt!
-    if (rejoined.length > 2000) {
+    if (rejoined.length > 1250) {
       console.log('rejoining')
       cutoff = firstMin
       topLines = []
@@ -155,6 +205,8 @@ const Popup = () => {
     return topLines.join('\n')
   }
 
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -162,7 +214,9 @@ const Popup = () => {
         <p>
           EDIT <code>src/pages/Popup/Popup.js</code> and save to reload.
         </p>
+        <div id="output"></div>
         <input id="inp_box" />
+        <button onClick={highlight}>hig</button>
         <button onClick={logInp}>Click sub</button>
         <a
           className="App-link"
