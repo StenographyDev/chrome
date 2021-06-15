@@ -9,10 +9,12 @@
   },
   "scripts": {
     "build": "node utils/build.js",
+    "setversion": "nvm use 14.17.0",
     "start": "node utils/webserver.js",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
   },
   "dependencies": {
+    "@emotion/react": "^11.4.0",
     "@hot-loader/react-dom": "^17.0.1",
     "@types/chrome": "0.0.132",
     "@types/react": "^17.0.2",
@@ -26,6 +28,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/preset-env": "^7.12.17",
     "@babel/preset-react": "^7.12.13",
+    "@emotion/babel-plugin": "^11.3.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",

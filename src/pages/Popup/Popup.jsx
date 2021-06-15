@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../../assets/img/logo.svg';
 import './Popup.css';
 
 let STENOGRAPHY_API_KEY = "01be3b53-eb8f-4f19-86ab-6f30ee92d74b"
@@ -7,8 +6,6 @@ let STENOGRAPHY_API_KEY = "01be3b53-eb8f-4f19-86ab-6f30ee92d74b"
 const Popup = () => {
 
   async function fetchStenography(code) {
-
-    console.log(code)
     let fetchUrl = 'https://stenography-worker.bramses.workers.dev/';
 
     let options = {
@@ -23,12 +20,17 @@ const Popup = () => {
     return json
   }
 
-  function logInp() {
-    const inp = document.getElementById('inp_box')
+  function ghPipeline() {
+    // const inp = document.getElementById('inp_box')
 
     var query = { active: true, currentWindow: true };
+
     function callback(tabs) {
-      var currentTab = tabs[0]; // there will be only one in this array      
+      var currentTab = tabs[0]; // there will be only one in this array    
+      if (!currentTab.url.includes('https://github.com/')) {
+        alert('gh only')
+        return
+      }
       let urlStr = currentTab.url.replace('https://github.com/', '')
       const rawLink = `https://raw.githubusercontent.com/${urlStr}`.replace('/blob', '')
 
@@ -38,16 +40,15 @@ const Popup = () => {
         .then(res => {
           return fetchStenography(res)
         })
-        .then(res => console.log(res.pm))
+        .then(res => {
+          console.log(res.pm)
+          alert(res.pm)
+        })
         .catch(err => console.error(err))
-
     }
 
     chrome.tabs.query(query, callback);
   }
-
-
-
 
   function highlight() {
     console.log('hig')
@@ -57,7 +58,6 @@ const Popup = () => {
 
 
       function greetUser() {
-        console.log('calls')
         const selection = window.getSelection().toString()
         return selection
       }
@@ -69,21 +69,6 @@ const Popup = () => {
         for (const frameResult of injectionResults)
           console.log('Frame Title: ' + frameResult.result);
       });
-
-      // function getTitle() {
-      //   return document.title;
-      // }
-      // const tabId = tabs[0].id;
-      // chrome.scripting.executeScript(
-      //   {
-      //     target: { tabId: tabId, allFrames: true },
-      //     function: getTitle,
-      //   },
-      //   (injectionResults) => {
-      //     for (const frameResult of injectionResults)
-      //       console.log('Frame Title: ' + frameResult.result);
-      //   });
-
     }
 
     chrome.tabs.query(query, callback);
@@ -201,31 +186,17 @@ const Popup = () => {
       topLines = appendDots(0, lines, cutoff, isTabs)
     }
 
-
     return topLines.join('\n')
   }
-
-
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          EDIT <code>src/pages/Popup/Popup.js</code> and save to reload.
-        </p>
-        <div id="output"></div>
-        <input id="inp_box" />
-        <button onClick={highlight}>hig</button>
-        <button onClick={logInp}>Click sub</button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
+
+        {/* <div id="output"></div> */}
+        {/* <input id="inp_box" /> */}
+        {/* <button onClick={highlight}>hig</button> */}
+        <button onClick={ghPipeline}>Parse GitHub</button>
       </header>
     </div>
   );
