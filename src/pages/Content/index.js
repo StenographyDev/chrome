@@ -8,6 +8,15 @@ chrome.runtime.onMessage.addListener(
         console.log('loading evt listener')
         console.log(request.data)
         alert(request.data)
+
+        chrome.runtime.sendMessage({
+            response: "something_completed",
+            data: {
+                subject: "Done",
+                content: "testing"
+            }
+        });
+
         if (request.msg === "something_completed") {
             //  To do something
             console.log(request.data.subject)

@@ -126,19 +126,11 @@ function highlightRightClick(code) {
     console.log(parseStr(code.selectionText))
     fetchStenography(parseStr(code.selectionText)).then(res => {
         console.log(res.pm)
-        chrome.runtime.sendMessage({
-            msg: "something_completed",
-            data: {
-                subject: "Done",
-                content: "testing"
-            }
-        });
 
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            console.log(tabs)
             chrome.tabs.sendMessage(tabs[0].id, { data: res.pm }, function (response) {
                 console.log("Message from the content script:");
-                console.log(response.response);
+                console.log(response);
             });
         });
     }).catch(err => console.error(err))
