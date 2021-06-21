@@ -13,13 +13,15 @@
     "128": "icon-128.png"
   },
   "host_permissions": [
-    "https://stackoverflow.com/*"
+    "https://stackoverflow.com/*",
+    "https://github.com/*"
   ],
   "permissions": [
     "tabs",
     "http://*/*",
     "https://*/*",
-    "scripting"
+    "scripting",
+    "contextMenus"
   ],
   "content_scripts": [
     {

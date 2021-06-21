@@ -51,29 +51,49 @@ const Popup = () => {
   }
 
   function highlight() {
-    console.log('hig')
     var query = { active: true, currentWindow: true };
     function callback(tabs) {
-
-
-
-      function greetUser() {
-        const selection = window.getSelection().toString()
+      function getHighlightedText() {
+        console.log('highlighted')
+        let selection = window.getSelection().toString()
+        selection = parseStr(selection)
+        console.log(selection)
+        fetchStenography(selection)
+          .then(res => {
+            console.log(res.pm)
+            // alert(res.pm)
+          })
+          .catch(err => console.error(err))
         return selection
       }
 
+      /*
+      
+      This code is executing a script that will highlight the text in all frames of the current tab.
+      */
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id, allFrames: true },
-        function: greetUser
+        function: getHighlightedText
       }, (injectionResults) => {
         for (const frameResult of injectionResults)
-          console.log('Frame Title: ' + frameResult.result);
+          console.log('Frame Title: ' + frameResult.result)
       });
     }
 
     chrome.tabs.query(query, callback);
   }
 
+  chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+      console.log('loading evt listener')
+      if (request.msg === "something_completed") {
+        //  To do something
+        console.log(request.data.subject)
+        console.log(request.data.content)
+        alert(request.data.content)
+      }
+    }
+  );
 
   function removeSmallest(arr) {
     var min = Math.min(...arr);
@@ -195,8 +215,8 @@ const Popup = () => {
 
         {/* <div id="output"></div> */}
         {/* <input id="inp_box" /> */}
-        {/* <button onClick={highlight}>hig</button> */}
-        <button onClick={ghPipeline}>Parse GitHub</button>
+        {/* <button onClick={highlight}>Explain Highlighted Text</button> */}
+        <button onClick={ghPipeline}>Explain GitHub File</button>
       </header>
     </div>
   );
