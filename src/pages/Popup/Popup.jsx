@@ -67,10 +67,6 @@ const Popup = () => {
         return selection
       }
 
-      /*
-      
-      This code is executing a script that will highlight the text in all frames of the current tab.
-      */
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id, allFrames: true },
         function: getHighlightedText
@@ -114,8 +110,10 @@ const Popup = () => {
       if (line.search(/\S/) <= cutoff) {
         topLines.push(line)
       }
+
       if (i >= 1 && lines[i - 1].search(/\S/) <= cutoff && line.search(/\S/) > cutoff) {
         if (isTabs) {
+
           topLines.push('\t'.repeat(line.search(/\S/)) + '...')
         }
         else {
