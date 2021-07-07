@@ -2,7 +2,6 @@ console.log('This is the background page?');
 console.log('Put the background scripts here.');
 
 let STENOGRAPHY_API_KEY = "01be3b53-eb8f-4f19-86ab-6f30ee92d74b"
-
 function removeSmallest(arr) {
     var min = Math.min(...arr);
     return {
