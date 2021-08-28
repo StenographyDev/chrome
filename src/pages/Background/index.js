@@ -1,9 +1,6 @@
 import secrets from 'secrets';
 
-console.log(secrets)
-
-console.log('This is the background page?');
-console.log('Put the background scripts here.');
+console.log('This is the background page working!');
 
 let STENOGRAPHY_API_KEY = secrets.STENOGRAPHY_API_KEY
 
