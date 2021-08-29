@@ -11,7 +11,8 @@
     "build": "node utils/build.js",
     "setversion": "nvm use 14.17.0",
     "start": "node utils/webserver.js",
-    "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
+    "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
+    "generateUUID": "node generate-uuid.js"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",
