@@ -39,6 +39,3 @@ else
     build_it
     zip_it $1 $api_key
 fi
-
-
-
