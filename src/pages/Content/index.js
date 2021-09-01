@@ -50,6 +50,33 @@ chrome.runtime.onMessage.addListener(
         // alert(request.data + '\npageX:' + pageX + '\npageY:' + pageY)
         showModal(pageX, pageY, request.data)
 
+        const initExplanations = [
+            {
+                'code': '() => {}',
+                'explanation': 'test explanation',
+                'metadata': {}
+            }
+        ]
+
+        chrome.storage.local.get("explanations", function (result) {
+            if (result["explanations"] === undefined) {
+                chrome.storage.local.set({ "explanations": initExplanations }, function () {
+                    console.log('Value is set to ' + initExplanations);
+                });
+            } else {
+                const explanations = result["explanations"];
+                explanations.push({
+                    explanation: request.data,
+                    code: request.code,
+                    metadata: {}
+                })
+                chrome.storage.local.set({ "explanations": explanations }, function () {
+                    console.log('Value is set to ' + explanations);
+                });
+                console.log(explanations)
+            }
+        });
+
         chrome.runtime.sendMessage({
             response: "something_completed",
             data: {

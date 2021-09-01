@@ -133,7 +133,7 @@ function highlightRightClick(code) {
         console.log(res.pm)
 
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { data: res.pm }, function (response) {
+            chrome.tabs.sendMessage(tabs[0].id, { data: res.pm, code: code.selectionText }, function (response) {
                 console.log("Message from the content script:");
                 console.log(response);
             });
