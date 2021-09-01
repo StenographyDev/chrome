@@ -32,11 +32,29 @@ const Popup = () => {
     }
   );
 
+  async function handleClick() {
+    console.log('history')
+    chrome.storage.local.set({ "completions": ['complete'] }, function () {
+      console.log('Value is set to ' + ['complete']);
+    });
+    chrome.storage.local.get("completions", function (result) {
+      console.log('result ' + JSON.stringify(result))
+      console.log('Value2 currently is ' + result.key);
+    });
+
+    // chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
+    chrome.runtime.openOptionsPage(function () {
+      console.log('open options page')
+    })
+  }
+
+
+
 
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={ghPipeline}>View History</button>
+        <button onClick={handleClick}>View History</button>
       </header>
     </div>
   );

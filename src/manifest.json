@@ -21,7 +21,8 @@
     "http://*/*",
     "https://*/*",
     "scripting",
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ],
   "content_scripts": [
     {
