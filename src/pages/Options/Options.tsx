@@ -206,10 +206,11 @@ chrome.storage.local.get("explanations", function (result) {
   }
 });
 
-
-
-
 const searchFuse = (searchTerm: string) => {
+  chrome.runtime.sendMessage({ greeting: searchTerm }, function (response) {
+    console.log(response);
+  });
+
   return fuse.search(searchTerm)
 }
 
@@ -217,9 +218,12 @@ interface Book { title: string; author: { firstName: string; lastName: string; }
 
 const Options: React.FC<Props> = ({ title }: Props) => {
   const [searchTerm, setSearchTerm] = useState(JSON.stringify([]));
+  const [myVar, setMyVar] = useState('');
   return <div className="OptionsContainer">{title.toUpperCase()} PAGE
     <input type="text" placeholder="Search" onChange={evt => setSearchTerm(JSON.stringify(searchFuse(evt.target.value)))} />
     <p>{searchTerm}</p>
+    {/* <br />
+    <p>variable: {myVar}</p> */}
   </div>;
 };
 
