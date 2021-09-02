@@ -218,12 +218,12 @@ interface Book { title: string; author: { firstName: string; lastName: string; }
 
 const Options: React.FC<Props> = ({ title }: Props) => {
   const [searchTerm, setSearchTerm] = useState(JSON.stringify([]));
-  const [myVar, setMyVar] = useState('');
+  const [apiKey, setApiKey] = useState('');
   return <div className="OptionsContainer">{title.toUpperCase()} PAGE
     <input type="text" placeholder="Search" onChange={evt => setSearchTerm(JSON.stringify(searchFuse(evt.target.value)))} />
     <p>{searchTerm}</p>
     {/* <br />
-    <p>variable: {myVar}</p> */}
+    <p>variable: {apiKey}</p> */}
   </div>;
 };
 
