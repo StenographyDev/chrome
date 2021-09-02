@@ -1,0 +1,19 @@
+.card{
+    display: flex;
+    /* border: 1px solid #ccc; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.code {
+    flex: 0 0 50%;
+    padding-right: 10px;
+    max-width: 50%;
+}
+
+.explanation {
+    background-color: aliceblue;
+    flex: 0 0 50%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

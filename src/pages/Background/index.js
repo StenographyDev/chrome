@@ -139,7 +139,8 @@ async function fetchStenography(code) {
 }
 
 function highlightRightClick(code) {
-    console.log(parseStr(code.selectionText))
+    console.log(code.selectionText)
+    // console.log(parseStr(code.selectionText))
     fetchStenography(parseStr(code.selectionText)).then(res => {
         console.log(res.pm)
 

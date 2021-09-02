@@ -1,174 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Options.css';
 import Fuse from 'fuse.js'
+import CodeCard from './CodeCard'
 
 interface Props {
   title: string;
 }
-
-const books = [
-  {
-    "title": "Old Man's War",
-    "author": {
-      "firstName": "John",
-      "lastName": "Scalzi"
-    }
-  },
-  {
-    "title": "The Lock Artist",
-    "author": {
-      "firstName": "Steve",
-      "lastName": "Hamilton"
-    }
-  },
-  {
-    "title": "HTML5",
-    "author": {
-      "firstName": "Remy",
-      "lastName": "Sharp"
-    }
-  },
-  {
-    "title": "Right Ho Jeeves",
-    "author": {
-      "firstName": "P.D",
-      "lastName": "Woodhouse"
-    }
-  },
-  {
-    "title": "The Code of the Wooster",
-    "author": {
-      "firstName": "P.D",
-      "lastName": "Woodhouse"
-    }
-  },
-  {
-    "title": "Thank You Jeeves",
-    "author": {
-      "firstName": "P.D",
-      "lastName": "Woodhouse"
-    }
-  },
-  {
-    "title": "The DaVinci Code",
-    "author": {
-      "firstName": "Dan",
-      "lastName": "Brown"
-    }
-  },
-  {
-    "title": "Angels & Demons",
-    "author": {
-      "firstName": "Dan",
-      "lastName": "Brown"
-    }
-  },
-  {
-    "title": "The Silmarillion",
-    "author": {
-      "firstName": "J.R.R",
-      "lastName": "Tolkien"
-    }
-  },
-  {
-    "title": "Syrup",
-    "author": {
-      "firstName": "Max",
-      "lastName": "Barry"
-    }
-  },
-  {
-    "title": "The Lost Symbol",
-    "author": {
-      "firstName": "Dan",
-      "lastName": "Brown"
-    }
-  },
-  {
-    "title": "The Book of Lies",
-    "author": {
-      "firstName": "Brad",
-      "lastName": "Meltzer"
-    }
-  },
-  {
-    "title": "Lamb",
-    "author": {
-      "firstName": "Christopher",
-      "lastName": "Moore"
-    }
-  },
-  {
-    "title": "Fool",
-    "author": {
-      "firstName": "Christopher",
-      "lastName": "Moore"
-    }
-  },
-  {
-    "title": "Incompetence",
-    "author": {
-      "firstName": "Rob",
-      "lastName": "Grant"
-    }
-  },
-  {
-    "title": "Fat",
-    "author": {
-      "firstName": "Rob",
-      "lastName": "Grant"
-    }
-  },
-  {
-    "title": "Colony",
-    "author": {
-      "firstName": "Rob",
-      "lastName": "Grant"
-    }
-  },
-  {
-    "title": "Backwards, Red Dwarf",
-    "author": {
-      "firstName": "Rob",
-      "lastName": "Grant"
-    }
-  },
-  {
-    "title": "The Grand Design",
-    "author": {
-      "firstName": "Stephen",
-      "lastName": "Hawking"
-    }
-  },
-  {
-    "title": "The Book of Samson",
-    "author": {
-      "firstName": "David",
-      "lastName": "Maine"
-    }
-  },
-  {
-    "title": "The Preservationist",
-    "author": {
-      "firstName": "David",
-      "lastName": "Maine"
-    }
-  },
-  {
-    "title": "Fallen",
-    "author": {
-      "firstName": "David",
-      "lastName": "Maine"
-    }
-  },
-  {
-    "title": "Monster 1959",
-    "author": {
-      "firstName": "David",
-      "lastName": "Maine"
-    }
-  }
-]
 
 const options = {
   // isCaseSensitive: false,
@@ -192,6 +29,7 @@ const options = {
 // start out empty
 let explanations: any = []
 let fuse = new Fuse(explanations, options);
+let allExplanations: any = []
 
 
 /*
@@ -206,24 +44,63 @@ chrome.storage.local.get("explanations", function (result) {
   }
 });
 
-const searchFuse = (searchTerm: string) => {
-  chrome.runtime.sendMessage({ greeting: searchTerm }, function (response) {
-    console.log(response);
-  });
+// chrome.runtime.sendMessage({ greeting: searchTerm }, function (response) {
+//   console.log(response);
+// });
 
+const searchFuse = (searchTerm: string): any => {
+  if (searchTerm.length === 0) return allExplanations
   return fuse.search(searchTerm)
 }
 
-interface Book { title: string; author: { firstName: string; lastName: string; } }
-
 const Options: React.FC<Props> = ({ title }: Props) => {
-  const [searchTerm, setSearchTerm] = useState(JSON.stringify([]));
+  const [searchResults, setSearchResults] = useState([]);
   const [apiKey, setApiKey] = useState('');
+  const listItems = searchResults.map((searchResult: any) => {
+    if ("item" in searchResult) {
+      console.log(JSON.stringify(searchResult.item.code))
+      return <li>
+        <CodeCard code={searchResult.item.code} explanation={searchResult.item.explanation} />
+      </li>
+    } else {
+      return <li>
+        <CodeCard code={searchResult.code} explanation={searchResult.explanation} />
+      </li>
+    }
+
+  }
+
+  );
+
+  useEffect(() => {
+    chrome.storage.local.get("explanations", function (result) {
+      if (result["explanations"]) {
+        explanations = result["explanations"]
+        allExplanations = result["explanations"]
+        fuse = new Fuse(explanations, options);
+        // setSearchTerm(JSON.stringify(explanations))
+        setSearchResults(explanations)
+      }
+    })
+  }, [])
   return <div className="OptionsContainer">{title.toUpperCase()} PAGE
-    <input type="text" placeholder="Search" onChange={evt => setSearchTerm(JSON.stringify(searchFuse(evt.target.value)))} />
-    <p>{searchTerm}</p>
-    {/* <br />
-    <p>variable: {apiKey}</p> */}
+    <br />
+    <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
+    <ul>{listItems}</ul>
+    <CodeCard code={`const answer = async (code, query) => {
+    const gptResponse = await openai.answers({
+        "documents": DOCUMENTS,
+        "question": \`\${code}\\n\\n\${query}\`,
+        "search_model": SEARCH_MODEL,
+        "model": MODEL,
+        "examples_context": EXAMPLES_CONTEXT,
+        "examples": EXAMPLES,
+        "max_tokens": 50,
+        "stop": ["\n", "<|endoftext|>"],
+    });
+
+    console.log(gptResponse.data);
+}`} explanation="This is the code that is being run in the background" />
   </div>;
 };
 

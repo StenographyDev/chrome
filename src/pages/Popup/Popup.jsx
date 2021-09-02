@@ -33,8 +33,6 @@ const Popup = () => {
   );
 
   async function handleClick() {
-    console.log('history')
-
     // chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
     chrome.runtime.openOptionsPage(function () {
       console.log('open options page')
