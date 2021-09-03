@@ -11,18 +11,18 @@ const options = {
   // isCaseSensitive: false,
   // includeScore: false,
   // shouldSort: true,
-  // includeMatches: false,
+  // includeMatches: true,
   // findAllMatches: false,
   // minMatchCharLength: 1,
   // location: 0,
-  // threshold: 0.6,
-  // distance: 100,
+  threshold: 0.4,
+  distance: 500,
   // useExtendedSearch: false,
   // ignoreLocation: false,
   // ignoreFieldNorm: false,
   keys: [
-    "code",
-    "explanation"
+    "explanation",
+    "code"
   ]
 };
 
@@ -56,21 +56,34 @@ const searchFuse = (searchTerm: string): any => {
 const Options: React.FC<Props> = ({ title }: Props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [apiKey, setApiKey] = useState('');
+
+  const removeExplanationFromStorage = (id: string) => {
+    console.log('removing explanation from storage: ' + id);
+    chrome.storage.local.get("explanations", function (result) {
+      let explanations = result["explanations"];
+      explanations = explanations.filter((explanation: any) => explanation.metadata.id !== id);
+      chrome.storage.local.set({ "explanations": explanations }, function () {
+        console.log('Value is set to ' + explanations);
+      });
+      console.log(explanations)
+      setSearchResults(explanations)
+    });
+  }
+
   const listItems = searchResults.map((searchResult: any) => {
     if ("item" in searchResult) {
-      console.log(JSON.stringify(searchResult.item.code))
       return <li>
-        <CodeCard code={searchResult.item.code} explanation={searchResult.item.explanation} />
+        <CodeCard code={searchResult.item.code} explanation={searchResult.item.explanation} id={searchResult.item.metadata.id} onChildClick={removeExplanationFromStorage} />
       </li>
     } else {
       return <li>
-        <CodeCard code={searchResult.code} explanation={searchResult.explanation} />
+        <CodeCard code={searchResult.code} explanation={searchResult.explanation} id={searchResult.metadata.id} onChildClick={removeExplanationFromStorage} />
       </li>
     }
 
-  }
+  });
 
-  );
+
 
   useEffect(() => {
     chrome.storage.local.get("explanations", function (result) {
@@ -78,29 +91,15 @@ const Options: React.FC<Props> = ({ title }: Props) => {
         explanations = result["explanations"]
         allExplanations = result["explanations"]
         fuse = new Fuse(explanations, options);
-        // setSearchTerm(JSON.stringify(explanations))
         setSearchResults(explanations)
       }
     })
-  }, [])
+  }, []);
+
   return <div className="OptionsContainer">{title.toUpperCase()} PAGE
     <br />
     <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
     <ul>{listItems}</ul>
-    <CodeCard code={`const answer = async (code, query) => {
-    const gptResponse = await openai.answers({
-        "documents": DOCUMENTS,
-        "question": \`\${code}\\n\\n\${query}\`,
-        "search_model": SEARCH_MODEL,
-        "model": MODEL,
-        "examples_context": EXAMPLES_CONTEXT,
-        "examples": EXAMPLES,
-        "max_tokens": 50,
-        "stop": ["\n", "<|endoftext|>"],
-    });
-
-    console.log(gptResponse.data);
-}`} explanation="This is the code that is being run in the background" />
   </div>;
 };
 

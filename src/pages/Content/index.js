@@ -43,6 +43,10 @@ const showModal = (pageX, pageY, data) => {
     });
 }
 
+function uuid() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         console.log('loading evt listener')
@@ -50,13 +54,7 @@ chrome.runtime.onMessage.addListener(
         // alert(request.data + '\npageX:' + pageX + '\npageY:' + pageY)
         showModal(pageX, pageY, request.data)
 
-        const initExplanations = [
-            {
-                'code': '() => {}',
-                'explanation': 'test explanation',
-                'metadata': {}
-            }
-        ]
+        const initExplanations = []
 
         chrome.storage.local.get("explanations", function (result) {
             if (result["explanations"] === undefined) {
@@ -68,7 +66,9 @@ chrome.runtime.onMessage.addListener(
                 explanations.push({
                     explanation: request.data,
                     code: request.code,
-                    metadata: {}
+                    metadata: {
+                        id: uuid(),
+                    }
                 })
                 chrome.storage.local.set({ "explanations": explanations }, function () {
                     console.log('Value is set to ' + explanations);
