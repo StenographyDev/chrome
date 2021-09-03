@@ -116,14 +116,18 @@ chrome.runtime.onMessage.addListener(
         console.log(sender.tab ?
             "from a content script:" + sender.tab.url :
             "from the extension");
-        console.log(request.greeting);
-        if (request.greeting == "hello")
+        console.log(JSON.stringify(request));
+        console.log(request.apiKey);
+        STENOGRAPHY_API_KEY = request.apiKey;
+        console.log(`set api key ${STENOGRAPHY_API_KEY}`)
+        sendResponse({ farewell: "goodbyeabove" });
+        if (request.apiKey === "hello")
             sendResponse({ farewell: "goodbye" });
     }
 );
 
 async function fetchStenography(code) {
-    console.log('fetching steno')
+    console.log('fetching steno with api key: ' + STENOGRAPHY_API_KEY)
     let fetchUrl = 'https://stenography-worker.bramses.workers.dev/';
 
     let options = {

@@ -44,18 +44,26 @@ chrome.storage.local.get("explanations", function (result) {
   }
 });
 
-// chrome.runtime.sendMessage({ greeting: searchTerm }, function (response) {
-//   console.log(response);
-// });
+
 
 const searchFuse = (searchTerm: string): any => {
   if (searchTerm.length === 0) return allExplanations
   return fuse.search(searchTerm)
 }
 
+const setApiKey = (apiKey: string | undefined) => {
+  if (!apiKey) return
+  chrome.storage.local.set({ "apiKey": apiKey }, function () {
+    console.log("apiKey set to " + apiKey);
+  });
+  chrome.runtime.sendMessage({ "apiKey": apiKey }, function (response) {
+    console.log(response);
+  });
+}
+
 const Options: React.FC<Props> = ({ title }: Props) => {
   const [searchResults, setSearchResults] = useState([]);
-  const [apiKey, setApiKey] = useState('');
+  const [apiKeyInput, setApiKeyInput] = useState("");
 
   const removeExplanationFromStorage = (id: string) => {
     console.log('removing explanation from storage: ' + id);
@@ -94,9 +102,19 @@ const Options: React.FC<Props> = ({ title }: Props) => {
         setSearchResults(explanations)
       }
     })
+    chrome.storage.local.get("apiKey", function (result) {
+      if (result["apiKey"]) {
+        console.log("apiKey found: " + result["apiKey"]);
+        let apiKey = result["apiKey"]
+        setApiKeyInput(apiKey)
+      }
+    })
   }, []);
 
   return <div className="OptionsContainer">{title.toUpperCase()} PAGE
+    <br />
+    <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
+    <button onClick={() => setApiKey(apiKeyInput)}>set it</button>
     <br />
     <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
     <ul>{listItems}</ul>
