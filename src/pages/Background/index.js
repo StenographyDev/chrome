@@ -145,7 +145,7 @@ async function fetchStenography(code) {
 function highlightRightClick(code) {
     console.log(code.selectionText)
     // console.log(parseStr(code.selectionText))
-    fetchStenography(parseStr(code.selectionText)).then(res => {
+    fetchStenography(code.selectionText).then(res => {
         console.log(res.pm)
 
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {

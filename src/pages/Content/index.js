@@ -1,7 +1,7 @@
 import { printLine } from './modules/print';
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
+// TODO: only log on dev mode
+
 
 var pageX;
 var pageY;
@@ -9,10 +9,8 @@ var pageY;
 document.onmousemove = function (e) {
     var x = e.pageX;
     var y = e.pageY;
-    // do what you want with x and y
     pageX = x;
     pageY = y;
-    // console.log(pageX, pageY);
 };
 
 const showModal = (pageX, pageY, data) => {
@@ -49,18 +47,20 @@ function uuid() {
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        console.log('loading evt listener')
-        console.log(request.data)
-        // alert(request.data + '\npageX:' + pageX + '\npageY:' + pageY)
         showModal(pageX, pageY, request.data)
 
         const initExplanations = []
 
         chrome.storage.local.get("explanations", function (result) {
             if (result["explanations"] === undefined) {
-                chrome.storage.local.set({ "explanations": initExplanations }, function () {
-                    console.log('Value is set to ' + initExplanations);
-                });
+                initExplanations.push({
+                    explanation: request.data,
+                    code: request.code,
+                    metadata: {
+                        id: uuid(),
+                    }
+                })
+                chrome.storage.local.set({ "explanations": initExplanations }, function () { });
             } else {
                 const explanations = result["explanations"];
                 explanations.push({
@@ -70,25 +70,11 @@ chrome.runtime.onMessage.addListener(
                         id: uuid(),
                     }
                 })
-                chrome.storage.local.set({ "explanations": explanations }, function () {
-                    console.log('Value is set to ' + explanations);
-                });
+                chrome.storage.local.set({ "explanations": explanations }, function () { });
                 console.log(explanations)
             }
         });
 
-        chrome.runtime.sendMessage({
-            response: "something_completed",
-            data: {
-                subject: "Done",
-                content: "testing"
-            }
-        });
-
-        if (request.msg === "something_completed") {
-            //  To do something
-            alert(request.data.content)
-        }
     }
 );
 
