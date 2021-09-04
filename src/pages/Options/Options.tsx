@@ -52,6 +52,7 @@ const searchFuse = (searchTerm: string): any => {
 }
 
 const setApiKey = (apiKey: string | undefined) => {
+  console.log('setting apikey from options')
   if (!apiKey) return
   chrome.storage.local.set({ "apiKey": apiKey }, function () {
     console.log("apiKey set to " + apiKey);
@@ -107,6 +108,9 @@ const Options: React.FC<Props> = ({ title }: Props) => {
         console.log("apiKey found: " + result["apiKey"]);
         let apiKey = result["apiKey"]
         setApiKeyInput(apiKey)
+        chrome.runtime.sendMessage({ "apiKey": apiKey }, function (response) {
+          console.log(response);
+        });
       }
     })
   }, []);
