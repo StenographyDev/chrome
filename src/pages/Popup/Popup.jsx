@@ -6,7 +6,7 @@ let STENOGRAPHY_API_KEY = "01be3b53-eb8f-4f19-86ab-6f30ee92d74b"
 const Popup = () => {
 
   async function fetchStenography(code) {
-    let fetchUrl = 'https://stenography-worker.bramses.workers.dev/';
+    let fetchUrl = 'https://stenography-worker.stenography.workers.dev/';
 
     let options = {
       method: 'POST',

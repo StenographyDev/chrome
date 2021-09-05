@@ -12,14 +12,12 @@ chrome.runtime.onMessage.addListener(
         STENOGRAPHY_API_KEY = request.apiKey;
         console.log(`set api key ${STENOGRAPHY_API_KEY}`)
         sendResponse({ farewell: "goodbyeabove" });
-        if (request.apiKey === "hello")
-            sendResponse({ farewell: "goodbye" });
     }
 );
 
 async function fetchStenography(code) {
     console.log('fetching steno with api key: ' + STENOGRAPHY_API_KEY)
-    let fetchUrl = 'https://stenography-worker.bramses.workers.dev/';
+    let fetchUrl = 'https://stenography-worker.stenography.workers.dev/';
 
     let options = {
         method: 'POST',

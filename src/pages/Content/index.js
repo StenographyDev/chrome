@@ -71,7 +71,6 @@ chrome.runtime.onMessage.addListener(
                     }
                 })
                 chrome.storage.local.set({ "explanations": explanations }, function () { });
-                console.log(explanations)
             }
         });
 
@@ -79,5 +78,3 @@ chrome.runtime.onMessage.addListener(
 );
 
 printLine("Using the 'printLine' function from the Print Module");
-
-

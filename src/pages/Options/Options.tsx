@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './Options.css';
 import Fuse from 'fuse.js'
 import CodeCard from './CodeCard'
+// @ts-ignore  
+import logo from '../../assets/img/chrome-invo.gif';
+
 
 interface Props {
   title: string;
@@ -115,14 +118,31 @@ const Options: React.FC<Props> = ({ title }: Props) => {
     })
   }, []);
 
-  return <div className="OptionsContainer">{title.toUpperCase()} PAGE
-    <br />
-    <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
-    <button onClick={() => setApiKey(apiKeyInput)}>set it</button>
-    <br />
-    <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
-    <ul>{listItems}</ul>
-  </div>;
+  return <div>
+    <h1>Tutorial</h1>
+    <pre>
+      <h2>How To Steno</h2>
+      <p>In this gif we are highlighting some code and letting the AI do its thing</p>
+      <img src={logo}></img>
+      <h2>Try It!</h2>
+      <p>First we'll need to get an API key</p>
+      <p>
+        <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
+      </p>
+
+      <code>
+        console.log("Hello World")
+      </code>
+    </pre>
+  </div>
+  // return <div className="OptionsContainer">{title.toUpperCase()} PAGE
+  //   <br />
+  //   <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
+  //   <button onClick={() => setApiKey(apiKeyInput)}>set it</button>
+  //   <br />
+  //   <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
+  //   <ul>{listItems}</ul>
+  // </div>;
 };
 
 export default Options;
