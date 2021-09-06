@@ -31,23 +31,32 @@ async function fetchStenography(code) {
     return json
 }
 
-function highlightRightClick(code) {
-    console.log(code.selectionText)
-    fetchStenography(code.selectionText).then(res => {
-        let fetchResp
-        if (res.message) { // error
-            fetchResp = res.message
-        } else {
-            fetchResp = res.pm
-        }
+function getSelection() {
+    return window.getSelection().toString()
+}
 
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: code.selectionText }, function (response) {
-                console.log("Message from the content script:");
-                console.log(response);
-            });
+function highlightRightClick(code) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        const tabID = tabs[0].id;
+        chrome.scripting.executeScript({ target: { tabId: tabID }, function: getSelection }, (selection) => {
+            const highlitedTrimmed = selection[0].result.trimStart()
+            fetchStenography(highlitedTrimmed).then(res => {
+                let fetchResp
+                if (res.message) { // error
+                    fetchResp = res.message
+                } else {
+                    fetchResp = res.pm
+                }
+
+                chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                    chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: highlitedTrimmed }, function (response) {
+                        console.log("Message from the content script:");
+                        console.log(response);
+                    });
+                });
+            }).catch(err => console.error(err))
         });
-    }).catch(err => console.error(err))
+    });
 }
 /*
 This code creates a context menu for the selection.

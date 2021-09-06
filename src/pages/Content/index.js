@@ -17,20 +17,31 @@ const showModal = (pageX, pageY, data) => {
     const modal = document.createElement("dialog");
     modal.setAttribute(
         "style", `
-    width: 300px;
-    top: 40px;
-    left: calc(50% - 500px);
-    bottom: 40px;
-    z-index: 100;
-    `
+            width: 300px;
+            top: 40px;
+            left: calc(50% - 500px);
+            bottom: 40px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            color: #000;
+            border-radius: 10px;
+            text-align: center;
+        `
     );
     modal.innerHTML = `<div>
-        <div>
-            <button style="padding: 4px 4px; font-size: 16px; border: none; border-radius: 10px;">x</button>
-        </div>
-        <div>
+            <button style="width: 30px;
+                font-size: 20px;
+                color: #c0c5cb;
+                align-self: flex-end;
+                float: right;
+                background-color: transparent;
+                border: none;
+                margin-bottom: 10px;">
+                ✖</button>
             <p>${data}</p>
-        </div>
     </div>`;
     document.body.appendChild(modal);
     const dialog = document.querySelector("dialog");
