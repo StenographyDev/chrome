@@ -2,7 +2,6 @@ import { printLine } from './modules/print';
 
 // TODO: only log on dev mode
 
-
 var pageX;
 var pageY;
 
@@ -18,9 +17,7 @@ const showModal = (pageX, pageY, data) => {
     modal.setAttribute(
         "style", `
             width: 300px;
-            top: 40px;
-            left: calc(50% - 500px);
-            bottom: 40px;
+            left: calc(0%);
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -43,9 +40,18 @@ const showModal = (pageX, pageY, data) => {
                 ✖</button>
             <p>${data}</p>
     </div>`;
+
     document.body.appendChild(modal);
     const dialog = document.querySelector("dialog");
     dialog.showModal();
+    const errorPage = document.querySelector("#apikey-options");
+    if (errorPage) {
+        errorPage.addEventListener("click", () => {
+            chrome.runtime.sendMessage({ "open-options": "open-options-val" }, function (response) {
+                console.log(response);
+            });
+        });
+    }
     dialog.querySelector("button").addEventListener("click", () => {
         dialog.close();
         document.body.removeChild(modal);
@@ -59,6 +65,10 @@ function uuid() {
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         showModal(pageX, pageY, request.data)
+
+        chrome.runtime.sendMessage({ "modal-shown": "modal-shown-value" }, function (response) {
+            console.log(response);
+        });
 
         const initExplanations = []
 

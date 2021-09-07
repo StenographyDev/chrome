@@ -77,7 +77,6 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       chrome.storage.local.set({ "explanations": explanations }, function () {
         console.log('Value is set to ' + explanations);
       });
-      console.log(explanations)
       setSearchResults(explanations)
     });
   }
@@ -98,6 +97,8 @@ const Options: React.FC<Props> = ({ title }: Props) => {
 
 
   useEffect(() => {
+
+    // get and set local explanations
     chrome.storage.local.get("explanations", function (result) {
       if (result["explanations"]) {
         explanations = result["explanations"]
@@ -106,11 +107,14 @@ const Options: React.FC<Props> = ({ title }: Props) => {
         setSearchResults(explanations)
       }
     })
+
+    // get and set api key
     chrome.storage.local.get("apiKey", function (result) {
       if (result["apiKey"]) {
         console.log("apiKey found: " + result["apiKey"]);
         let apiKey = result["apiKey"]
         setApiKeyInput(apiKey)
+        // send api key to background script
         chrome.runtime.sendMessage({ "apiKey": apiKey }, function (response) {
           console.log(response);
         });

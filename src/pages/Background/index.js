@@ -4,14 +4,17 @@ let STENOGRAPHY_API_KEY = secrets.STENOGRAPHY_API_KEY
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        console.log(sender.tab ?
-            "from a content script:" + sender.tab.url :
-            "from the extension");
-        console.log(JSON.stringify(request));
-        console.log(request.apiKey);
-        STENOGRAPHY_API_KEY = request.apiKey;
-        console.log(`set api key ${STENOGRAPHY_API_KEY}`)
-        sendResponse({ farewell: "goodbyeabove" });
+        console.log(request)
+        if ("open-options" in request) {
+            chrome.runtime.openOptionsPage();
+            sendResponse({ farewell: "open options page" });
+        } else if ("modal-shown" in request) {
+            sendResponse({ farewell: "ack" });
+        } else {
+            STENOGRAPHY_API_KEY = request.apiKey;
+            sendResponse({ farewell: "api key is set" });
+        }
+
     }
 );
 
@@ -35,25 +38,25 @@ function getSelection() {
     return window.getSelection().toString()
 }
 
-function highlightRightClick(code) {
+function highlightRightClick(highlight) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         const tabID = tabs[0].id;
         chrome.scripting.executeScript({ target: { tabId: tabID }, function: getSelection }, (selection) => {
-            const highlitedTrimmed = selection[0].result.trimStart()
-            fetchStenography(highlitedTrimmed).then(res => {
+            const highlightTrimmed = selection[0].result.trimStart()
+            fetchStenography(highlightTrimmed).then(res => {
                 let fetchResp
                 if (res.message) { // error
-                    fetchResp = res.message
+                    if (res.message.includes('Unauthorized POST')) {
+                        fetchResp = 'The <a id="apikey-options">API key</a> you provided is invalid. Please check your API key and try again.'
+                    } else {
+                        fetchResp = res.message
+                    }
                 } else {
                     fetchResp = res.pm
                 }
 
-                chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: highlitedTrimmed }, function (response) {
-                        console.log("Message from the content script:");
-                        console.log(response);
-                    });
-                });
+                chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: highlightTrimmed });
+
             }).catch(err => console.error(err))
         });
     });

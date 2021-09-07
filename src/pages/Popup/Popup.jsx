@@ -45,7 +45,7 @@ const Popup = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={handleClick}>View History</button>
+        <button onClick={handleClick}>View Settings Page</button>
       </header>
     </div>
   );
