@@ -1,7 +1,7 @@
 import secrets from 'secrets';
 
-// secrets.STENOGRAPHY_API_KEY
-let STENOGRAPHY_API_KEY = null
+let STENOGRAPHY_API_KEY = secrets.STENOGRAPHY_API_KEY
+// let STENOGRAPHY_API_KEY = null
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -47,6 +47,11 @@ function highlightRightClick(highlight) {
         const tabID = tabs[0].id;
         chrome.scripting.executeScript({ target: { tabId: tabID }, function: getSelection }, (selection) => {
             const highlightTrimmed = selection[0].result.trimStart()
+            chrome.action.setBadgeBackgroundColor(
+                { color: [255, 255, 255, 127] },  // Green
+                () => { /* ... */ },
+            );
+            chrome.action.setBadgeText({ text: '🤖' }, () => { console.log('loading') });
             fetchStenography(highlightTrimmed).then(res => {
                 let fetchResp
                 if (res.message) { // error
@@ -60,14 +65,21 @@ function highlightRightClick(highlight) {
                 }
 
                 chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: highlightTrimmed });
-
+                chrome.action.setBadgeBackgroundColor(
+                    { color: [0, 0, 0, 0] },
+                    () => { },
+                );
+                chrome.action.setBadgeText({ text: '' }, () => { console.log('loaded') });
             }).catch(err => {
                 console.error(err)
+                chrome.action.setBadgeBackgroundColor(
+                    { color: [0, 0, 0, 0] },
+                    () => { },
+                );
+                chrome.action.setBadgeText({ text: '' }, () => { console.log('loaded') });
                 chrome.tabs.sendMessage(tabs[0].id, { data: err, code: null });
             })
         });
-    }, function (err) {
-        console.error(`chrome.tabs.query error: ${err}`)
     });
 }
 /*

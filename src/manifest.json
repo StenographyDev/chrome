@@ -22,7 +22,8 @@
     "https://*/*",
     "scripting",
     "contextMenus",
-    "storage"
+    "storage",
+    "browserAction"
   ],
   "content_scripts": [
     {
