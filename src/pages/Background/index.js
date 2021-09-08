@@ -66,6 +66,8 @@ function highlightRightClick(highlight) {
                 chrome.tabs.sendMessage(tabs[0].id, { data: err, code: null });
             })
         });
+    }, function (err) {
+        console.error(`chrome.tabs.query error: ${err}`)
     });
 }
 /*
@@ -75,6 +77,10 @@ chrome.contextMenus.create({
     id: 'steno',
     title: "Stenography",
     contexts: ["selection"],  // ContextType
+}, function () {
+    if (chrome.runtime.lastError) {
+        console.error(chrome.runtime.lastError.message);
+    }
 });
 
 chrome.contextMenus.onClicked.addListener(highlightRightClick);
