@@ -39,9 +39,6 @@ const Popup = () => {
     })
   }
 
-
-
-
   return (
     <div className="App">
       <header className="App-header">

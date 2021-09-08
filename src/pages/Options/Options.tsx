@@ -133,10 +133,11 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       <p>
         <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
       </p>
-
-      <code>
-        console.log("Hello World")
-      </code>
+      <p>Set your API key</p>
+      <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
+      <button onClick={() => setApiKey(apiKeyInput)}>set it</button>
+      <h2>NICE!</h2>
+      <p>Go to <a href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
     </pre>
   </div>
   // return <div className="OptionsContainer">{title.toUpperCase()} PAGE

@@ -1,6 +1,7 @@
 import secrets from 'secrets';
 
-let STENOGRAPHY_API_KEY = secrets.STENOGRAPHY_API_KEY
+// secrets.STENOGRAPHY_API_KEY
+let STENOGRAPHY_API_KEY = null
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -20,12 +21,15 @@ chrome.runtime.onMessage.addListener(
 
 async function fetchStenography(code) {
     console.log('fetching steno with api key: ' + STENOGRAPHY_API_KEY)
+    if (!STENOGRAPHY_API_KEY) {
+        return { message: 'Please provide an <a id="apikey-options">API key</a> to use this extension.' }
+    }
     let fetchUrl = 'https://stenography-worker.stenography.workers.dev/';
 
     let options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ "context": "vsc", "code": code, "api_key": STENOGRAPHY_API_KEY, "audience": "pm" })
+        body: JSON.stringify({ "context": "chrome", "code": code, "populate": true, "api_key": STENOGRAPHY_API_KEY, "audience": "pm" })
     };
 
     const resp = await fetch(fetchUrl, options)
@@ -52,12 +56,15 @@ function highlightRightClick(highlight) {
                         fetchResp = res.message
                     }
                 } else {
-                    fetchResp = res.pm
+                    fetchResp = res.pm.trim()
                 }
 
                 chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: highlightTrimmed });
 
-            }).catch(err => console.error(err))
+            }).catch(err => {
+                console.error(err)
+                chrome.tabs.sendMessage(tabs[0].id, { data: err, code: null });
+            })
         });
     });
 }
