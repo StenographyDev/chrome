@@ -14,16 +14,15 @@
   },
   "host_permissions": [
     "https://stackoverflow.com/*",
-    "https://github.com/*"
+    "https://github.com/*",
+    "http://*/*",
+    "https://*/*"
   ],
   "permissions": [
     "tabs",
-    "http://*/*",
-    "https://*/*",
     "scripting",
     "contextMenus",
-    "storage",
-    "browserAction"
+    "storage"
   ],
   "content_scripts": [
     {

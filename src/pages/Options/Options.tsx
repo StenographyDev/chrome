@@ -68,6 +68,7 @@ const setApiKey = (apiKey: string | undefined) => {
 const Options: React.FC<Props> = ({ title }: Props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [apiKeyInput, setApiKeyInput] = useState("");
+  const [isTutorial, setIsTutorial] = useState(true)
 
   const removeExplanationFromStorage = (id: string) => {
     console.log('removing explanation from storage: ' + id);
@@ -96,6 +97,19 @@ const Options: React.FC<Props> = ({ title }: Props) => {
 
 
 
+
+  // run the tutorial
+  chrome.storage.local.get("tutorial-done", function (result) {
+    if (!result["tutorial-done"]) {
+      chrome.storage.local.set({ "tutorial-done": 'tutorial-done' }, function () {
+        console.log("tutorial set to done");
+      });
+    } else {
+      console.log("tutorial already done");
+      setIsTutorial(false)
+    }
+  })
+
   useEffect(() => {
 
     // get and set local explanations
@@ -120,34 +134,48 @@ const Options: React.FC<Props> = ({ title }: Props) => {
         });
       }
     })
+
+
   }, []);
 
-  return <div>
-    <h1>Tutorial</h1>
-    <pre>
-      <h2>How To Steno</h2>
-      <p>In this gif we are highlighting some code and letting the AI do its thing</p>
-      <img src={logo}></img>
-      <h2>Try It!</h2>
-      <p>First we'll need to get an API key</p>
-      <p>
-        <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
-      </p>
-      <p>Set your API key</p>
+  if (isTutorial) {
+    return <div>
+      <h1>Tutorial</h1>
+      <pre>
+        <h2>How To Steno</h2>
+        <p>In this gif we are highlighting some code and letting the AI do its thing</p>
+        <img src={logo}></img>
+        <h2>Try It!</h2>
+        <p>First we'll need to get an API key</p>
+        <p>
+          <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
+        </p>
+        <p>Set your API key</p>
+        <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
+        <button onClick={() => {
+          alert('set api key!')
+          setApiKey(apiKeyInput)
+        }}>set it</button>
+        <h2>NICE!</h2>
+        <p>Go to <a target="_blank" href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
+      </pre>
+    </div>
+  } else {
+    return <div className="OptionsContainer">
+      <p><a target="_blank" href="https://stenography-worker.stenography.workers.dev/">API Page - Documentation</a></p>
+      <br />
       <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
-      <button onClick={() => setApiKey(apiKeyInput)}>set it</button>
-      <h2>NICE!</h2>
-      <p>Go to <a href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
-    </pre>
-  </div>
-  // return <div className="OptionsContainer">{title.toUpperCase()} PAGE
-  //   <br />
-  //   <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
-  //   <button onClick={() => setApiKey(apiKeyInput)}>set it</button>
-  //   <br />
-  //   <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
-  //   <ul>{listItems}</ul>
-  // </div>;
+      <button onClick={() => {
+        alert('set api key!')
+        setApiKey(apiKeyInput)
+      }}>set it</button>
+      <br />
+      <h1>Local History</h1>
+      <h4>Erased when local storage is cleared</h4>
+      <input type="text" placeholder="Search" onChange={evt => setSearchResults(searchFuse(evt.target.value))} />
+      <ul>{listItems}</ul>
+    </div>;
+  }
 };
 
 export default Options;

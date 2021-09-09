@@ -19,6 +19,40 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+
+// on install show tutorial page
+chrome.runtime.onInstalled.addListener((details) => {
+    const currentVersion = chrome.runtime.getManifest().version
+    const previousVersion = details.previousVersion
+    const reason = details.reason
+
+    console.log(`Previous Version: ${previousVersion}`)
+    console.log(`Current Version: ${currentVersion}`)
+
+    switch (reason) {
+        case 'install':
+            console.log('New User installed the extension.')
+            chrome.storage.local.set({ "tutorial": "first-run" }, function () {
+                console.log('Value is set to first-run');
+                chrome.runtime.openOptionsPage();
+            });
+            break;
+        case 'update':
+            console.log('User has updated their extension.')
+            chrome.storage.local.set({ "tutorial": "first-run" }, function () {
+                console.log('Value is set to first-run');
+                chrome.runtime.openOptionsPage();
+            });
+            break;
+        case 'chrome_update':
+        case 'shared_module_update':
+        default:
+            console.log('Other install events within the browser')
+            break;
+    }
+
+})
+
 async function fetchStenography(code) {
     console.log('fetching steno with api key: ' + STENOGRAPHY_API_KEY)
     if (!STENOGRAPHY_API_KEY) {
