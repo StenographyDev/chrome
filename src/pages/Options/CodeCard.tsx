@@ -32,7 +32,7 @@ const CodeCard: React.FC<Props> = ({ explanation, code, id, onChildClick }: Prop
             <SyntaxHighlighter language="javascript" style={agate}
                 wrapLongLines={true}
             >
-                {code.trimStart()}
+                {code}
             </SyntaxHighlighter>
         </div>
         <div className="explanation">

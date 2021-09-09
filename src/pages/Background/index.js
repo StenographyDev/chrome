@@ -1,7 +1,16 @@
 import secrets from 'secrets';
 
-let STENOGRAPHY_API_KEY = secrets.STENOGRAPHY_API_KEY
-// let STENOGRAPHY_API_KEY = null
+// let STENOGRAPHY_API_KEY = secrets.STENOGRAPHY_API_KEY
+let STENOGRAPHY_API_KEY
+
+chrome.storage.local.get("apiKey", function (result) {
+    if (result["apiKey"]) {
+        console.log("apiKey found: " + result["apiKey"]);
+        STENOGRAPHY_API_KEY = result["apiKey"]
+    } else {
+        STENOGRAPHY_API_KEY = null
+    }
+})
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {

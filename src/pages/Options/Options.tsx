@@ -151,6 +151,7 @@ const Options: React.FC<Props> = ({ title }: Props) => {
           <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
         </p>
         <p>Set your API key</p>
+        {/* TODO this input auto redirects to the search page, block that interaction */}
         <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
         <button onClick={() => {
           alert('set api key!')
