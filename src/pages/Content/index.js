@@ -16,7 +16,7 @@ const showModal = (pageX, pageY, data) => {
     const modal = document.createElement("dialog");
     modal.setAttribute(
         "style", `
-            width: 300px;
+            width: fit-content(20em);;
             left: calc(0%);
             z-index: 100;
             display: flex;

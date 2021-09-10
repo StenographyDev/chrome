@@ -72,7 +72,7 @@ async function fetchStenography(code) {
     let options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ "context": "chrome", "code": code, "populate": true, "api_key": STENOGRAPHY_API_KEY, "audience": "pm" })
+        body: JSON.stringify({ "context": "chrome", "code": code, "populate": true, "stackoverflow": true, "api_key": STENOGRAPHY_API_KEY, "audience": "pm" })
     };
 
     const resp = await fetch(fetchUrl, options)
@@ -104,7 +104,16 @@ function highlightRightClick(highlight) {
                         fetchResp = res.message
                     }
                 } else {
-                    fetchResp = res.pm.trim()
+                    if ("stackoverflow" in res && "stackOverflowURLs" in res.stackoverflow && res.stackoverflow.stackOverflowURLs.length > 0) {
+                        let StackOverflowSuggestions = `<ul style="list-style:none;">`
+                        for (let i = 0; i < res.stackoverflow.stackOverflowURLs.length; i++) {
+                            StackOverflowSuggestions += `<li><a href="${res.stackoverflow.stackOverflowURLs[i].url}" target="_blank">${res.stackoverflow.stackOverflowURLs[i].question}</a></li>`
+                        }
+                        StackOverflowSuggestions += `</ul>`
+                        fetchResp = res.pm.trim() + '<br /><br /><b>Stack Overflow Search Suggestions:</b><br />' + StackOverflowSuggestions
+                    } else {
+                        fetchResp = res.pm.trim()
+                    }
                 }
 
                 chrome.tabs.sendMessage(tabs[0].id, { data: fetchResp, code: highlightTrimmed });
