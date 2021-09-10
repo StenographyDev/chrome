@@ -165,7 +165,7 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       }}>Set API Key</button>
       <h2>NICE!</h2>
       <p>After your API key is set Go to <a target="_blank" href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
-      <p>Revisit this page anytime to see your translations stored here! Click the Stenography logo pinned to your bar</p>
+      <p>Revisit this page anytime to see your translations stored here! Click the Stenography logo pinned to your bar andthen "View Settings Page"</p>
       <br />
     </div>
   } else {
