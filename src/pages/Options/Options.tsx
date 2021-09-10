@@ -4,6 +4,8 @@ import Fuse from 'fuse.js'
 import CodeCard from './CodeCard'
 // @ts-ignore  
 import logo from '../../assets/img/chrome-invo.gif';
+// @ts-ignore  
+import loadingImg from '../../assets/img/invo-loading.png';
 
 
 interface Props {
@@ -139,27 +141,32 @@ const Options: React.FC<Props> = ({ title }: Props) => {
   }, []);
 
   if (isTutorial) {
-    return <div>
+    return <div className="OptionsContainer">
       <h1>Tutorial</h1>
-      <pre>
-        <h2>How To Steno</h2>
-        <p>In this gif we are highlighting some code and letting the AI do its thing</p>
-        <img src={logo}></img>
-        <h2>Try It!</h2>
-        <p>First we'll need to get an API key</p>
-        <p>
-          <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
-        </p>
-        <p>Set your API key</p>
-        {/* TODO this input auto redirects to the search page, block that interaction */}
-        <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
-        <button onClick={() => {
-          alert('set api key!')
-          setApiKey(apiKeyInput)
-        }}>set it</button>
-        <h2>NICE!</h2>
-        <p>Go to <a target="_blank" href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
-      </pre>
+      <h2>How To Steno</h2>
+      <p>In this gif we are highlighting some code and letting the AI do its thing</p>
+      <img src={logo}></img>
+      <p><b>While loading the AI will show a little robot badge. To see this, pin it to your extension bar using the puzzle piece in the top right.</b></p>
+      <img src={loadingImg} className="tutImg"></img>
+      <h2>Try It!</h2>
+      <p>First we'll need to get an API key</p>
+      <p>
+        <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
+      </p>
+      <p>Set your API key</p>
+      {/* TODO this input auto redirects to the search page, block that interaction */}
+      <input id="api_input" type="text" placeholder="Set API Key" />
+      <button onClick={() => {
+        alert('set api key!')
+        if (document.getElementById('api_input') !== null && document.getElementById('api_input') !== undefined) {
+          const inputElement = document.getElementById('api_input') as HTMLInputElement
+          setApiKey(inputElement.value)
+        }
+      }}>Set API Key</button>
+      <h2>NICE!</h2>
+      <p>After your API key is set Go to <a target="_blank" href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
+      <p>Revisit this page anytime to see your translations stored here! Click the Stenography logo pinned to your bar</p>
+      <br />
     </div>
   } else {
     return <div className="OptionsContainer">
