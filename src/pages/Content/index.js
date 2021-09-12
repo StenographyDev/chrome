@@ -16,10 +16,11 @@ const showModal = (pageX, pageY, data) => {
     const modal = document.createElement("dialog");
     modal.setAttribute(
         "style", `
-            width: fit-content(20em);;
+            width: fit-content(20em);
             left: calc(0%);
             z-index: 100;
             display: flex;
+            font-family: 'Roboto', sans-serif;
             flex-direction: column;
             align-items: center;
             background-color: #fff;
