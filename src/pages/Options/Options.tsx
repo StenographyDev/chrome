@@ -57,13 +57,13 @@ const searchFuse = (searchTerm: string): any => {
 }
 
 const setApiKey = (apiKey: string | undefined) => {
-  console.log('setting apikey from options')
+  // console.log('setting apikey from options')
   if (!apiKey) return
   chrome.storage.local.set({ "apiKey": apiKey }, function () {
-    console.log("apiKey set to " + apiKey);
+    // console.log("apiKey set to " + apiKey);
   });
   chrome.runtime.sendMessage({ "apiKey": apiKey }, function (response) {
-    console.log(response);
+    // console.log(response);
   });
 }
 
@@ -73,12 +73,12 @@ const Options: React.FC<Props> = ({ title }: Props) => {
   const [isTutorial, setIsTutorial] = useState(true)
 
   const removeExplanationFromStorage = (id: string) => {
-    console.log('removing explanation from storage: ' + id);
+    // console.log('removing explanation from storage: ' + id);
     chrome.storage.local.get("explanations", function (result) {
       let explanations = result["explanations"];
       explanations = explanations.filter((explanation: any) => explanation.metadata.id !== id);
       chrome.storage.local.set({ "explanations": explanations }, function () {
-        console.log('Value is set to ' + explanations);
+        // console.log('Value is set to ' + explanations);
       });
       setSearchResults(explanations)
     });
@@ -104,10 +104,10 @@ const Options: React.FC<Props> = ({ title }: Props) => {
   chrome.storage.local.get("tutorial-done", function (result) {
     if (!result["tutorial-done"]) {
       chrome.storage.local.set({ "tutorial-done": 'tutorial-done' }, function () {
-        console.log("tutorial set to done");
+        // console.log("tutorial set to done");
       });
     } else {
-      console.log("tutorial already done");
+      // console.log("tutorial already done");
       setIsTutorial(false)
     }
   })
@@ -127,12 +127,12 @@ const Options: React.FC<Props> = ({ title }: Props) => {
     // get and set api key
     chrome.storage.local.get("apiKey", function (result) {
       if (result["apiKey"]) {
-        console.log("apiKey found: " + result["apiKey"]);
+        // console.log("apiKey found: " + result["apiKey"]);
         let apiKey = result["apiKey"]
         setApiKeyInput(apiKey)
         // send api key to background script
         chrome.runtime.sendMessage({ "apiKey": apiKey }, function (response) {
-          console.log(response);
+          // console.log(response);
         });
       }
     })

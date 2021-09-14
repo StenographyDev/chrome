@@ -17,7 +17,7 @@ interface Props {
 const CodeCard: React.FC<Props> = ({ explanation, code, id, onChildClick }: Props) => {
 
     function handleClick(event: any) {
-        console.log(onChildClick)
+        // console.log(onChildClick)
         onChildClick(id);
     }
 

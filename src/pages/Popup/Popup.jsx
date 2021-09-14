@@ -1,7 +1,7 @@
 import React from 'react';
 import './Popup.css';
 
-let STENOGRAPHY_API_KEY = "01be3b53-eb8f-4f19-86ab-6f30ee92d74b"
+let STENOGRAPHY_API_KEY = null
 
 const Popup = () => {
 
@@ -22,11 +22,11 @@ const Popup = () => {
 
   chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-      console.log('loading evt listener')
+      // console.log('loading evt listener')
       if (request.msg === "something_completed") {
         //  To do something
-        console.log(request.data.subject)
-        console.log(request.data.content)
+        // console.log(request.data.subject)
+        // console.log(request.data.content)
         alert(request.data.content)
       }
     }

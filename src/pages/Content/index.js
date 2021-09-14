@@ -49,10 +49,14 @@ const showModal = (pageX, pageY, data) => {
     if (errorPage) {
         errorPage.addEventListener("click", () => {
             chrome.runtime.sendMessage({ "open-options": "open-options-val" }, function (response) {
-                console.log(response);
+                // console.log(response);
             });
         });
     }
+    window.onclick = function (event) {
+        dialog.close();
+    }
+
     dialog.querySelector("button").addEventListener("click", () => {
         dialog.close();
         document.body.removeChild(modal);
@@ -68,7 +72,7 @@ chrome.runtime.onMessage.addListener(
         showModal(pageX, pageY, request.data)
 
         chrome.runtime.sendMessage({ "modal-shown": "modal-shown-value" }, function (response) {
-            console.log(response);
+            // console.log(response);
         });
 
         const initExplanations = []

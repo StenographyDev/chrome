@@ -5,7 +5,7 @@ let STENOGRAPHY_API_KEY
 
 chrome.storage.local.get("apiKey", function (result) {
     if (result["apiKey"]) {
-        console.log("apiKey found: " + result["apiKey"]);
+        // console.log("apiKey found: " + result["apiKey"]);
         STENOGRAPHY_API_KEY = result["apiKey"]
     } else {
         STENOGRAPHY_API_KEY = null
@@ -14,7 +14,7 @@ chrome.storage.local.get("apiKey", function (result) {
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        console.log(request)
+        // console.log(request)
         if ("open-options" in request) {
             chrome.runtime.openOptionsPage();
             sendResponse({ farewell: "open options page" });
@@ -35,35 +35,35 @@ chrome.runtime.onInstalled.addListener((details) => {
     const previousVersion = details.previousVersion
     const reason = details.reason
 
-    console.log(`Previous Version: ${previousVersion}`)
-    console.log(`Current Version: ${currentVersion}`)
+    // console.log(`Previous Version: ${previousVersion}`)
+    // console.log(`Current Version: ${currentVersion}`)
 
     switch (reason) {
         case 'install':
-            console.log('New User installed the extension.')
+            // console.log('New User installed the extension.')
             chrome.storage.local.set({ "tutorial": "first-run" }, function () {
-                console.log('Value is set to first-run');
+                // console.log('Value is set to first-run');
                 chrome.runtime.openOptionsPage();
             });
             break;
         case 'update':
-            console.log('User has updated their extension.')
+            // console.log('User has updated their extension.')
             chrome.storage.local.set({ "tutorial": "first-run" }, function () {
-                console.log('Value is set to first-run');
+                // console.log('Value is set to first-run');
                 chrome.runtime.openOptionsPage();
             });
             break;
         case 'chrome_update':
         case 'shared_module_update':
         default:
-            console.log('Other install events within the browser')
+            // console.log('Other install events within the browser')
             break;
     }
 
 })
 
 async function fetchStenography(code) {
-    console.log('fetching steno with api key: ' + STENOGRAPHY_API_KEY)
+    // console.log('fetching steno with api key: ' + STENOGRAPHY_API_KEY)
     if (!STENOGRAPHY_API_KEY) {
         return { message: 'Please provide an <a id="apikey-options">API key</a> to use this extension.' }
     }

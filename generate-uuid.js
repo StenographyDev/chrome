@@ -14,6 +14,6 @@ function generateUUID() {
     return uuid;
 }
 
-console.log(generateUUID())
+// console.log(generateUUID())
 
 // export default generateUUID;
