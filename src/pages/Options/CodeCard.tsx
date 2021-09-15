@@ -6,7 +6,6 @@ var TurndownService = require('turndown').default
 
 var turndownService = new TurndownService()
 
-
 interface Props {
     explanation: string;
     code: string;

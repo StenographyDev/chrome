@@ -101,6 +101,7 @@ function highlightRightClick(highlight) {
                     if (res.message.includes('Unauthorized POST')) {
                         fetchResp = 'The <a id="apikey-options">API key</a> you provided is invalid. Please check your API key and try again.'
                     } else {
+                        console.log(res)
                         fetchResp = res.message
                     }
                 } else {
@@ -110,9 +111,9 @@ function highlightRightClick(highlight) {
                             StackOverflowSuggestions += `<li><a href="${res.stackoverflow.stackOverflowURLs[i].url}" target="_blank">${res.stackoverflow.stackOverflowURLs[i].question}</a></li>`
                         }
                         StackOverflowSuggestions += `</ul>`
-                        fetchResp = res.pm.trim() + '<br /><br /><b>Stack Overflow Search Suggestions:</b><br />' + StackOverflowSuggestions
+                        fetchResp = res.pm + '<br /><br /><b>Stack Overflow Search Suggestions:</b><br />' + StackOverflowSuggestions
                     } else {
-                        fetchResp = res.pm.trim()
+                        fetchResp = res.pm
                     }
                 }
 
@@ -128,8 +129,15 @@ function highlightRightClick(highlight) {
                     { color: [0, 0, 0, 0] },
                     () => { },
                 );
-                chrome.action.setBadgeText({ text: '' }, () => { console.log('loaded') });
+                chrome.action.setBadgeText({ text: '' }, () => { console.log('errored') });
                 chrome.tabs.sendMessage(tabs[0].id, { data: err, code: null });
+            }).finally(res => {
+                // assume something broke and comment out badge
+                chrome.action.setBadgeBackgroundColor(
+                    { color: [0, 0, 0, 0] },
+                    () => { },
+                );
+                chrome.action.setBadgeText({ text: '' }, () => { console.log('errored') });
             })
         });
     });

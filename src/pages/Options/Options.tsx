@@ -151,7 +151,7 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       <h2>Try It!</h2>
       <p>First we'll need to get an API key</p>
       <p>
-        <b>Get an API key <a href="https://stenography-worker.stenography.workers.dev/">here</a></b>
+        <b>Get an API key <a target="_blank" href="https://stenography-worker.stenography.workers.dev/">here</a></b>
       </p>
       <p>Set your API key</p>
       {/* TODO this input auto redirects to the search page, block that interaction */}
@@ -163,9 +163,11 @@ const Options: React.FC<Props> = ({ title }: Props) => {
           setApiKey(inputElement.value)
         }
       }}>Set API Key</button>
-      <h2>NICE!</h2>
       <p>After your API key is set Go to <a target="_blank" href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
       <p>Revisit this page anytime to see your translations stored here! Click the Stenography logo pinned to your bar andthen "View Settings Page"</p>
+      <h2>Debugging</h2>
+      <p>This extension and API are ironing out some bugs 🐞. If you find any, please <a href="mailto:bram+bugs@stenography.dev">let us know!</a></p>
+      <p><b>KNOWN BUG:</b> Ocasionally the alert won't show up when the extension is first installed, try refreshing the page and running it again.</p>
       <br />
     </div>
   } else {
