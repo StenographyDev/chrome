@@ -152,7 +152,7 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       <h2>Try It!</h2>
       <p>First we'll need to get an API key</p>
       <p>
-        <b>Get an API key <a target="_blank" href="https://stenography-worker.stenography.workers.dev/">here</a></b>
+        <b>Get an API key <a target="_blank" href="https://stenography.dev/dashboard">here</a></b>
       </p>
       <p>Set your API key</p>
       {/* TODO this input auto redirects to the search page, block that interaction */}
@@ -173,7 +173,7 @@ const Options: React.FC<Props> = ({ title }: Props) => {
     </div>
   } else {
     return <div className="OptionsContainer">
-      <p><a target="_blank" href="https://stenography-worker.stenography.workers.dev/">API Page - Documentation</a></p>
+      <p><a target="_blank" href="https://stenography.dev/dashboard">API Page - Documentation</a></p>
       <br />
       <input id="api_input" type="text" placeholder="Set API Key" value={apiKeyInput} onChange={evt => setApiKeyInput(evt.target.value)} />
       <button onClick={() => {
