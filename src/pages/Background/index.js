@@ -126,8 +126,6 @@ function highlightRightClick(highlight) {
                 );
                 chrome.action.setBadgeText({ text: '' }, () => { console.log('loaded') });
             }).catch(err => {
-                console.error(err)
-                console.log('is in catch')
                 chrome.action.setBadgeBackgroundColor(
                     { color: [0, 0, 0, 0] },
                     () => { },

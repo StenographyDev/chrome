@@ -1,8 +1,7 @@
 {
   "name": "stenography-chrome",
-  "version": "4.0.2",
-  "description": "Run Stenography on GitHub",
-  "license": "MIT",
+  "version": "0.0.28",
+  "description": "Run Stenography API on Chrome",
   "repository": {
     "type": "git",
     "url": ""
