@@ -82,6 +82,7 @@ async function fetchStenography(code) {
 }
 
 function getSelection() {
+    console.log(window.getSelection().toString())
     return window.getSelection().toString()
 }
 
@@ -90,6 +91,7 @@ function highlightRightClick(highlight) {
         const tabID = tabs[0].id;
         chrome.scripting.executeScript({ target: { tabId: tabID }, function: getSelection }, (selection) => {
             const highlightTrimmed = selection[0].result.trimStart()
+            console.log(highlightTrimmed)
             chrome.action.setBadgeBackgroundColor(
                 { color: [255, 255, 255, 127] },  // Green
                 () => { /* ... */ },
@@ -125,6 +127,7 @@ function highlightRightClick(highlight) {
                 chrome.action.setBadgeText({ text: '' }, () => { console.log('loaded') });
             }).catch(err => {
                 console.error(err)
+                console.log('is in catch')
                 chrome.action.setBadgeBackgroundColor(
                     { color: [0, 0, 0, 0] },
                     () => { },
@@ -137,7 +140,8 @@ function highlightRightClick(highlight) {
                     { color: [0, 0, 0, 0] },
                     () => { },
                 );
-                chrome.action.setBadgeText({ text: '' }, () => { console.log('errored') });
+                chrome.action.setBadgeText({ text: '' }, () => { console.log('is in finally') });
+                selection = null
             })
         });
     });

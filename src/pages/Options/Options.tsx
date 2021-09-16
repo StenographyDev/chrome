@@ -45,6 +45,7 @@ it will create a new Fuse object with that value.
 chrome.storage.local.get("explanations", function (result) {
   if (result["explanations"]) {
     explanations = result["explanations"]
+    console.log(JSON.stringify(explanations, null, 2))
     fuse = new Fuse(explanations, options);
   }
 });
