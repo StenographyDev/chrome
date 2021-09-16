@@ -167,7 +167,7 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       <p>After your API key is set Go to <a target="_blank" href="https://github.com/bramses/awesome-stenography/blob/main/javascript/react-test-base.js">this repo</a> and try it out!</p>
       <p>Revisit this page anytime to see your translations stored here! Click the Stenography logo pinned to your bar andthen "View Settings Page"</p>
       <h2>Debugging</h2>
-      <p>This extension and API are ironing out some bugs 🐞. If you find any, please <a href="mailto:bram+bugs@stenography.dev">let us know!</a></p>
+      <p>This extension and API are ironing out some bugs 🐞. If you find any, please <a target="_blank" href="https://github.com/StenographyDev/issues-repo">let us know!</a></p>
       <p><b>KNOWN BUG:</b> Ocasionally the alert won't show up when the extension is first installed, try refreshing the page and running it again.</p>
       <br />
     </div>
