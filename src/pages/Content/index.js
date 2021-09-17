@@ -19,6 +19,7 @@ document.onmousemove = function (e) {
 
 const showModal = (pageX, pageY, data, code) => {
     const modal = document.createElement("dialog");
+    if (typeof data === 'object' && data !== null && !Array.isArray(data)) data = JSON.stringify(data, null, 2);
     modal.setAttribute(
         "style", `
             width: fit-content(20em);
